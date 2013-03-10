@@ -8,7 +8,14 @@ task :required do
 		require "closure-compiler"
 	rescue LoadError
 		isOK = false
-		puts "Closure-Compiler GEM not found, please install it by running 'gem install closure.compiler'"
+		puts "Closure-Compiler GEM not found.\nInstall it by running 'gem install closure.compiler'"
+	end
+	begin
+		require "zip/zip"
+		require "zip/zipfilesystem"
+	rescue LoadError
+		isOK = false
+		puts "Zip GEM not found.\nInstall it by running 'gem install rubyzip'"
 	end
 	if !isOK
 		exit
@@ -16,12 +23,36 @@ task :required do
 	puts "DONE"
 end
 
-task :compile do
-	
+task :files => :required do
+	puts "minifying javascript..."
+	src_file = File.read 'src/animatedList.js'
+	File.open('release/animatedList.jquery.min.js', 'w+') do |file_handler|
+		file_handler.write Closure::Compiler.new.compress(src_file)
+	end
+	system "cp -r src/* release/"
+	puts "DONE"
+end
+
+task :package => [:required, :files] do
+	puts "packing..."
+	FileUtils.rm 'animatedList.jquery.zip', :force => true
+	Zip::ZipFile.open('animatedList.jquery.zip', 'w') do |zipfile|
+		files = FileList.new('release/*')
+		files.each do |file|
+			zipfile.add(file, file)
+		end
+	end
+	puts "DONE"
+end
+
+task :build do
+	puts "building project..."
+	Rake::Task['required'].execute
+	Rake::Task['files'].execute
+	Rake::Task['package'].execute
+	puts "project built sucessfully!"
 end
 
 task :default do
-	puts "building project..."
-	Rake::Task['required'].execute
-	puts "project built sucessfully!"
+	Rake::Task['build'].execute
 end
