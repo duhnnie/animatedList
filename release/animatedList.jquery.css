@@ -1,0 +1,34 @@
+/* 
+Developed by Duhnnie -> www.duhnnie.net
+animatedList v. 0.1
+released on 26/07/2012
+*/
+.animatedList .animatedList-container {
+  position: relative;
+  top: 0px;
+  display: none;
+}
+.animatedList .animatedList-container * {
+  position: static;
+  /*necessary for ie8 to takes the fade effect in the description text*/
+}
+.animatedList .animatedList .animatedList-desc {
+  position: relative;
+}
+.animatedList .animatedList ul {
+  overflow: hidden;
+  list-style: none;
+  padding: 0px;
+  clear: both;
+  text-align: center;
+  margin: auto;
+  background: #1e1e1e li;
+  background-display: inline;
+  background-margin: auto;
+  background-clear: none;
+  background-height: 64px;
+  background-float: left;
+  background-text-align: center;
+  background-position: static;
+  /* fixes problem with ie8 */
+}

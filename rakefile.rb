@@ -11,6 +11,12 @@ task :required do
 		puts "Closure-Compiler GEM not found.\nInstall it by running 'gem install closure.compiler'"
 	end
 	begin
+		require "sass"
+	rescue LoadError
+		isOK = false
+		puts "Sass GEM not found.\nInstall it by running 'gem install sass'"
+	end
+	begin
 		require "zip/zip"
 		require "zip/zipfilesystem"
 	rescue LoadError
@@ -25,10 +31,16 @@ end
 
 task :files => :required do
 	puts "minifying javascript..."
-	src_file = File.read 'src/animatedList.js'
+	src_file = File.read 'src/animatedList.jquery.js'
 	File.open('release/animatedList.jquery.min.js', 'w+') do |file_handler|
 		file_handler.write Closure::Compiler.new.compress(src_file)
 	end
+
+	puts "DONE"
+
+	puts "generating stylesheets..."
+	system 'sass --style expanded src/sass/animatedList.scss release/animatedList.jquery.css'
+	system 'sass --style compressed src/sass/animatedList.scss release/animatedList.jquery.min.css'
 	system "cp -r src/* release/"
 	puts "DONE"
 end
