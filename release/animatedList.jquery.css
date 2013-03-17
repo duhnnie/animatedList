@@ -12,23 +12,25 @@ released on 26/07/2012
   position: static;
   /*necessary for ie8 to takes the fade effect in the description text*/
 }
-.animatedList .animatedList .animatedList-desc {
+.animatedList .animatedList-desc {
   position: relative;
 }
-.animatedList .animatedList ul {
+.animatedList ul {
   overflow: hidden;
   list-style: none;
   padding: 0px;
   clear: both;
   text-align: center;
   margin: auto;
-  background: #1e1e1e li;
-  background-display: inline;
-  background-margin: auto;
-  background-clear: none;
-  background-height: 64px;
-  background-float: left;
-  background-text-align: center;
-  background-position: static;
+  background: #1e1e1e;
+}
+.animatedList ul li {
+  display: inline;
+  margin: auto;
+  clear: none;
+  height: 64px;
+  float: left;
+  text-align: center;
+  position: static;
   /* fixes problem with ie8 */
 }
